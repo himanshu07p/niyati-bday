@@ -1,0 +1,48 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fdf5e6; /* Match body background */
+}
+
+.gift-box {
+    font-size: 100px; /* Make the emoji large */
+    text-align: center;
+    cursor: pointer;
+    padding: 40px;
+    border-radius: 20px;
+    background-color: #fff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.gift-box:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.gift-box p {
+    font-size: 24px;
+    color: #5d3a9b;
+    font-family: 'Playfair Display', serif;
+    margin-top: 15px;
+}
+
+.gift-box.hidden {
+    display: none;
+}
+
+/* Initially hide the main app content */
+#app {
+    display: none;
+    width: 100%; /* Ensure app takes full width once visible */
+    text-align: center; /* Center content if needed, or rely on component styles */
+}
+
+/* When app is shown, body should revert to normal flow for scrolling etc. */
+body.content-revealed {
+    display: block; /* Or whatever its default display should be */
+    height: auto;
+}

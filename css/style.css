@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap');
+
+body {
+    font-family: 'Lato', sans-serif; /* Modern sans-serif for body */
+    margin: 0;
+    padding: 0;
+    background-color: #fdf5e6; /* Old Lace */
+    color: #4a4a4a; /* Darker gray for better readability */
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scrollbar from animations */
+}
+
+h1 {
+    font-family: 'Playfair Display', serif; /* Elegant serif for main headings */
+    font-size: 3em; /* Larger main heading */
+    margin: 0;
+    color: #5d3a9b; /* Deep purple from previous theme */
+}
+
+h2 {
+    font-family: 'Playfair Display', serif; /* Consistent serif for sub-headings */
+    font-size: 2em; /* Adjusted size */
+    margin: 20px 0 10px 0; /* Adjusted margins */
+    color: #9370db; /* MediumPurple */
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

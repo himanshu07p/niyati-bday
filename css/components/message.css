@@ -1,0 +1,26 @@
+.message-container {
+    background-color: #ffffff; /* Pure white for a clean look */
+    border: 1px solid #e0d2e0; /* Softer, lighter purple border */
+    border-radius: 12px; /* More rounded corners */
+    padding: 30px; /* Increased padding */
+    margin: 30px auto; /* Centered with more margin */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Softer, more diffused shadow */
+    max-width: 700px; /* Max width for better layout */
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; /* Smooth transition for hover */
+}
+
+.message-container:hover {
+    transform: translateY(-5px) scale(1.02); /* Lift and slightly scale on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12); /* Enhanced shadow on hover */
+}
+
+.message-container h2 {
+    margin-top: 0; /* Remove top margin if it's the first element */
+    color: #8a2be2; /* BlueViolet, a vibrant but pleasing purple */
+}
+
+.message-container p {
+    font-size: 1.1em;
+    line-height: 1.7;
+    color: #4a4a4a;
+}

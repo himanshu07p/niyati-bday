@@ -1,0 +1,23 @@
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 40px 20px; /* More margin around the gallery */
+    gap: 20px; /* Spacing between images */
+}
+
+.gallery img {
+    width: 220px; /* Slightly larger images */
+    height: 220px; /* Make them square for consistency */
+    object-fit: cover; /* Ensure images fill the space without distortion */
+    margin: 0; /* Gap property handles spacing */
+    border-radius: 12px; /* Consistent rounded corners */
+    border: none; /* Remove previous border if any */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smoother transition */
+}
+
+.gallery img:hover {
+    transform: scale(1.05) translateY(-5px); /* More engaging hover effect */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}

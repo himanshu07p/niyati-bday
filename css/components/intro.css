@@ -1,0 +1,9 @@
+.intro {
+    padding: 40px 20px; /* Increased padding */
+    text-align: center;
+    margin-bottom: 30px; /* Space below intro */
+}
+
+.intro h1 { /* Targeting the h1 specifically within the intro if needed, assuming it's the main page title */
+    margin-bottom: 15px;
+}
