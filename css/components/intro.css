@@ -7,3 +7,18 @@
 .intro h1 { /* Targeting the h1 specifically within the intro if needed, assuming it's the main page title */
     margin-bottom: 15px;
 }
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .intro {
+        padding: 30px 15px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .intro {
+        padding: 20px 10px;
+        margin-bottom: 15px;
+    }
+}

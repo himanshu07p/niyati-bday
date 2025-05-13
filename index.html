@@ -9,11 +9,18 @@
     <link rel="stylesheet" href="css/components/message.css">
     <link rel="stylesheet" href="css/components/animations.css">
     <link rel="stylesheet" href="css/components/gift.css">
+    <link rel="stylesheet" href="css/components/balloons.css"> <!-- Add this line -->
 </head>
 <body>
-    <div id="gift-box" class="gift-box">
-        🎁
-        <p>Click me!</p>
+    <div id="balloon-container"></div> <!-- New container for balloons -->
+    <div id="gift-wrapper"> <!-- New wrapper for centering and managing visibility -->
+        <div id="gift-box" class="gift-box">
+            <div class="gift-lid">
+                <div class="ribbon-bow"></div> <!-- For the bow on top -->
+            </div>
+            <div class="gift-base">
+            </div>
+        </div>
     </div>
     <div id="app"></div>
 

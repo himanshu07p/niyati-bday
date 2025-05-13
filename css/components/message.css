@@ -24,3 +24,28 @@
     line-height: 1.7;
     color: #4a4a4a;
 }
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .message-container {
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    .message-container p {
+        font-size: 1em;
+        line-height: 1.6;
+    }
+}
+
+@media (max-width: 480px) {
+    .message-container {
+        padding: 15px;
+        margin: 15px auto;
+        border-radius: 8px;
+    }
+
+    .message-container p {
+        font-size: 0.95em;
+    }
+}

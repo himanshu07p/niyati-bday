@@ -1,0 +1,121 @@
+#balloon-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* pointer-events: none; Replaced by individual balloon pointer-events */
+    overflow: hidden;
+    z-index: -1; /* Behind all other content */
+}
+
+.balloon {
+    position: absolute;
+    width: 60px;
+    height: 75px;
+    background-color: rgba(255, 105, 180, 0.8); /* Default pink, can be overridden by JS */
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; /* Balloon shape */
+    animation: floatUp 10s ease-in-out forwards; /* Not infinite, forwards to hold end state before removal */
+    opacity: 0.7;
+    box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
+    cursor: pointer; /* Indicate it's clickable */
+    pointer-events: auto; /* Allow clicks on individual balloons */
+}
+
+.balloon::after { /* String */
+    content: '';
+    position: absolute;
+    bottom: -20px; /* Start of string below balloon */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 30px; /* String length */
+    background-color: rgba(100, 100, 100, 0.5);
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) translateX(0px) rotate(0deg); /* Start from bottom */
+        opacity: 0; /* Start transparent for a smoother appearance */
+    }
+    10% {
+        opacity: 0.8; /* Fade in */
+    }
+    50% {
+        transform: translateY(40vh) translateX(20px) rotate(5deg); /* Mid-point sway */
+        opacity: 0.9;
+    }
+    75% {
+        transform: translateY(10vh) translateX(-15px) rotate(-5deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-15vh) translateX(10px) rotate(0deg); /* Float off screen top, ensure it's fully off */
+        opacity: 0; /* Fade out */
+    }
+}
+
+/* Pop animation */
+@keyframes balloonPop {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5); /* Expand quickly */
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(0.5); /* Shrink and disappear */
+        opacity: 0;
+    }
+}
+
+.balloon.popping {
+    animation: balloonPop 0.3s ease-out forwards;
+    /* No need to change box-shadow or other properties if pop is quick */
+}
+
+/* Particle Styles */
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #fff; /* Default particle color, can be overridden by JS */
+    border-radius: 50%;
+    pointer-events: none; /* Particles should not be interactive */
+    opacity: 0; /* Start invisible, animation will make them appear */
+    animation: scatter 0.6s ease-out forwards;
+}
+
+@keyframes scatter {
+    0% {
+        opacity: 1;
+        transform: scale(1) translate(0, 0);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5) translate(var(--tx, 0), var(--ty, 0)); /* JS will set --tx and --ty */
+    }
+}
+
+/* Mobile adjustments for balloons */
+@media (max-width: 768px) {
+    .balloon {
+        width: 45px;
+        height: 60px;
+    }
+    .balloon::after { /* String */
+        height: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .balloon {
+        width: 35px;
+        height: 45px;
+    }
+    .balloon::after { /* String */
+        height: 20px;
+    }
+}

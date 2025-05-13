@@ -1,48 +1,190 @@
 body, html {
     height: 100%;
     margin: 0;
+    background-color: #fdf5e6; /* Match body background */
+    overflow: hidden; /* Prevent scrollbars during initial gift display */
+}
+
+#gift-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fdf5e6; /* Match body background */
+    width: 100%;
+    height: 100%;
+    position: fixed; /* Cover the whole screen */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Above other content */
+    background-color: rgba(253, 245, 230, 0.7); /* Slightly more transparent overlay */
+    backdrop-filter: blur(4px); /* Increased blur */
+    transition: opacity 0.5s ease-out;
+}
+
+#gift-wrapper.hidden {
+    opacity: 0;
+    pointer-events: none; /* Make it non-interactive when hidden */
 }
 
 .gift-box {
-    font-size: 100px; /* Make the emoji large */
-    text-align: center;
+    position: relative;
+    width: 180px; /* Increased size */
+    height: 130px; /* Base height */
     cursor: pointer;
-    padding: 40px;
-    border-radius: 20px;
-    background-color: #fff;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    transition: transform 0.3s ease-out;
 }
 
-.gift-box:hover {
-    transform: scale(1.1);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+.gift-lid {
+    position: absolute;
+    width: 200px; /* Wider than base for a nice overhang */
+    height: 60px; /* Taller lid */
+    background-image: linear-gradient(to bottom, #d12f7a, #b32265); /* Gradient for lid */
+    border: 1px solid #a01e5a;
+    border-bottom: none;
+    border-radius: 12px 12px 5px 5px; /* More pronounced rounding */
+    left: 50%;
+    transform: translateX(-50%);
+    top: -60px; /* Positioned above the base */
+    z-index: 2;
+    transform-origin: bottom center;
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Slower, bouncier opening */
+    box-shadow: 0 -3px 8px rgba(0,0,0,0.15), inset 0 2px 3px rgba(255,255,255,0.2); /* Lid highlights */
 }
 
-.gift-box p {
-    font-size: 24px;
-    color: #5d3a9b;
-    font-family: 'Playfair Display', serif;
-    margin-top: 15px;
+/* Ribbon bow on the lid */
+.ribbon-bow {
+    position: absolute;
+    top: -20px; /* Sits higher on top of the lid */
+    left: 50%;
+    transform: translateX(-50%) rotate(-5deg); /* Slight tilt */
+    width: 35px; /* Larger bow center */
+    height: 35px;
+    background-image: linear-gradient(to bottom, #ffd700, #ffc107); /* Gold gradient */
+    border: 1px solid #e0ac00;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.ribbon-bow::before, .ribbon-bow::after { /* Loops of the bow */
+    content: '';
+    position: absolute;
+    width: 45px; /* Larger loops */
+    height: 30px;
+    background-image: linear-gradient(to bottom, #ffd700, #ffc107);
+    border: 1px solid #e0ac00;
+    border-radius: 50% 50% 20% 20% / 100% 100% 30% 30%; /* More loop-like shape */
+    top: -10px; /* Position loops relative to bow center */
+    box-shadow: inset 0 -2px 3px rgba(0,0,0,0.1);
+}
+.ribbon-bow::before {
+    left: -30px;
+    transform: rotate(-40deg);
+}
+.ribbon-bow::after {
+    right: -30px;
+    transform: rotate(40deg);
 }
 
-.gift-box.hidden {
-    display: none;
+.gift-base {
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom, #e05297, #c74385); /* Gradient for base */
+    border: 1px solid #a3116b;
+    border-radius: 0 0 12px 12px; /* Match lid rounding */
+    position: relative; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2), inset 0 5px 10px rgba(0,0,0,0.1); /* Base shadows */
+}
+
+/* Vertical Ribbon on Base */
+.gift-base::before {
+    content: '';
+    position: absolute;
+    width: 35px; /* Wider ribbon */
+    height: calc(100% + 4px); /* Extend slightly beyond base for seamless look with lid ribbon */
+    background-image: linear-gradient(to right, #ffc107, #ffd700, #ffc107); /* Horizontal gradient for ribbon */
+    border-left: 1px solid #e0ac00;
+    border-right: 1px solid #e0ac00;
+    left: 50%;
+    top: -2px; /* Align with top edge */
+    transform: translateX(-50%);
+    z-index: 1; 
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.15);
+}
+/* Horizontal Ribbon on Base */
+.gift-base::after {
+    content: '';
+    position: absolute;
+    width: calc(100% + 4px); /* Extend slightly for seamless look */
+    height: 35px; /* Ribbon height */
+    background-image: linear-gradient(to bottom, #ffc107, #ffd700, #ffc107); /* Vertical gradient for ribbon */
+    border-top: 1px solid #e0ac00;
+    border-bottom: 1px solid #e0ac00;
+    top: 50%;
+    left: -2px; /* Align with left edge */
+    transform: translateY(-50%);
+    z-index: 0; 
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.15);
+}
+
+/* Opening Animation States */
+.gift-box.opening .gift-lid {
+    transform: translateX(-50%) rotateX(-120deg) translateY(-20px) scale(0.95); /* More dynamic open */
+}
+
+.gift-box.opened {
+    animation: giftFadeOut 0.5s ease-out forwards;
+    animation-delay: 0.4s; /* Start after lid has opened a bit */
+}
+
+@keyframes giftFadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.7) translateY(20px); /* Fade out downwards */
+    }
 }
 
 /* Initially hide the main app content */
 #app {
     display: none;
-    width: 100%; /* Ensure app takes full width once visible */
-    text-align: center; /* Center content if needed, or rely on component styles */
+    width: 100%;
+    text-align: center;
 }
 
-/* When app is shown, body should revert to normal flow for scrolling etc. */
+/* When app is shown, body should revert to normal flow */
 body.content-revealed {
-    display: block; /* Or whatever its default display should be */
+    display: block;
     height: auto;
+    overflow: auto; /* Allow scrolling for main content */
+}
+
+/* Mobile Optimizations */
+@media (max-width: 480px) {
+    .gift-box {
+        width: 150px; /* Adjusted for mobile */
+        height: 110px;
+    }
+    .gift-lid {
+        width: 165px; /* Adjusted for mobile */
+        height: 50px;
+        top: -50px;
+    }
+    .ribbon-bow {
+        width: 30px;
+        height: 30px;
+        top: -18px;
+    }
+    .ribbon-bow::before, .ribbon-bow::after {
+        width: 35px;
+        height: 25px;
+    }
+    .ribbon-bow::before { left: -25px; transform: rotate(-35deg); }
+    .ribbon-bow::after { right: -25px; transform: rotate(35deg); }
+
+    .gift-base::before {width: 30px;} /* Vertical ribbon width */
+    .gift-base::after {height: 30px;} /* Horizontal ribbon height */
 }
