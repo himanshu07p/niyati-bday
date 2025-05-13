@@ -1,88 +1,128 @@
+let activeBalloons = [];
+let tiltInfluenceX = 0;
+let tiltInfluenceY = 0;
+let balloonCreationIntervalId = null; 
+let animationFrameId = null;
+
+const TILT_SENSITIVITY_FACTOR = 0.3;
+const BASE_UPWARD_SPEED = -2.0; 
+const SWAY_MAGNITUDE = 0.15;
+const SWAY_SPEED = 0.001;
+
+function handleDeviceOrientation(event) {
+    let { beta, gamma } = event; 
+
+    gamma = Math.max(-90, Math.min(90, gamma)); 
+    beta = Math.max(-90, Math.min(90, beta));   
+
+    tiltInfluenceX = -(gamma / 90) * TILT_SENSITIVITY_FACTOR * 5;
+    tiltInfluenceY = (beta / 90) * TILT_SENSITIVITY_FACTOR * 5;
+}
+
+function updateBalloonPositions() {
+    const now = Date.now();
+    for (let i = activeBalloons.length - 1; i >= 0; i--) {
+        const balloonData = activeBalloons[i];
+        const { element, x, y, swayOffset } = balloonData;
+
+        const currentSway = Math.sin(swayOffset + now * SWAY_SPEED) * SWAY_MAGNITUDE;
+        balloonData.x += tiltInfluenceX + currentSway;
+        balloonData.y += BASE_UPWARD_SPEED + tiltInfluenceY;
+
+        element.style.transform = `translate(${balloonData.x}px, ${balloonData.y}px) rotate(${tiltInfluenceX * 1.5}deg)`;
+
+        const rect = element.getBoundingClientRect(); 
+        if (rect.bottom < 0) {
+            element.remove();
+            activeBalloons.splice(i, 1);
+        }
+        
+        const containerWidth = element.parentElement.offsetWidth;
+        if (x > containerWidth) balloonData.x = -rect.width; 
+        if (x < -rect.width) balloonData.x = containerWidth;
+    }
+    
+    if (animationFrameId !== null) {
+        animationFrameId = requestAnimationFrame(updateBalloonPositions);
+    }
+}
+
 function createBalloon() {
     const balloonContainer = document.getElementById('balloon-container');
     if (!balloonContainer) return;
 
-    const balloon = document.createElement('div');
-    balloon.className = 'balloon';
+    const element = document.createElement('div');
+    element.className = 'balloon';
 
-    // Randomize properties
     const colors = [
-        'rgba(255, 105, 180, 0.8)', // Pink
-        'rgba(137, 207, 240, 0.8)', // Light Blue
-        'rgba(255, 218, 185, 0.8)', // Peach
-        'rgba(173, 216, 230, 0.8)', // Light Sky Blue
-        'rgba(221, 160, 221, 0.8)'  // Plum
+        'rgba(255, 105, 180, 0.8)', 'rgba(137, 207, 240, 0.8)',
+        'rgba(255, 218, 185, 0.8)', 'rgba(173, 216, 230, 0.8)',
+        'rgba(221, 160, 221, 0.8)'
     ];
     const balloonColor = colors[Math.floor(Math.random() * colors.length)];
-    balloon.style.backgroundColor = balloonColor;
-    balloon.style.left = `${Math.random() * 90}%`; // Random horizontal start position
+    element.style.backgroundColor = balloonColor;
 
-    // Randomize animation duration and delay for a more natural look for floatUp
-    const duration = Math.random() * 5 + 8; // Duration between 8s and 13s
-    const delay = Math.random() * 5;      // Delay up to 5s
+    const approxCssWidth = 60; 
+    const initialX = Math.random() * (balloonContainer.offsetWidth - approxCssWidth);
+    
+    const initialY = balloonContainer.offsetHeight + Math.random() * 50; 
+    element.style.opacity = '0'; 
+    element.style.transform = `translate(${initialX}px, ${initialY}px)`;
 
-    balloon.style.animationDuration = `${duration}s`;
-    balloon.style.animationDelay = `${delay}s`;
+    const balloonData = {
+        element, x: initialX, y: initialY,
+        swayOffset: Math.random() * Math.PI * 2
+    };
+    activeBalloons.push(balloonData);
 
-    // Click to pop
-    balloon.addEventListener('click', () => {
-        if (!balloon.classList.contains('popping')) { // Prevent multiple pops
-            balloon.classList.add('popping');
-            createParticles(balloon.getBoundingClientRect(), balloonColor, balloonContainer);
-            // The existing animationend listener will handle removal of the balloon itself
-        }
-    }, { once: true }); // Click listener should only fire once
+    setTimeout(() => { element.style.opacity = '0.8'; }, 100 + Math.random() * 500); 
 
-    // Remove balloon from DOM after its animation (either floatUp or balloonPop) completes
-    balloon.addEventListener('animationend', () => {
-        balloon.remove();
-    });
+    element.addEventListener('click', () => {
+        element.remove();
+        const index = activeBalloons.findIndex(b => b.element === element);
+        if (index > -1) activeBalloons.splice(index, 1);
+    }, { once: true });
 
-    balloonContainer.appendChild(balloon);
+    balloonContainer.appendChild(element);
 }
 
-function createParticles(balloonRect, color, container) {
-    const numberOfParticles = 10 + Math.floor(Math.random() * 10); // 10-19 particles
-    for (let i = 0; i < numberOfParticles; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        // Position particle at the center of the balloon
-        // Adjust for balloonContainer's offset if it's not the viewport
-        const containerRect = container.getBoundingClientRect();
-        particle.style.left = `${balloonRect.left + balloonRect.width / 2 - containerRect.left}px`;
-        particle.style.top = `${balloonRect.top + balloonRect.height / 2 - containerRect.top}px`;
-        
-        particle.style.backgroundColor = color.replace('0.8', '1'); // Use solid version of balloon color
+function startBalloonParty(numberOfBalloons = 10) { 
+    activeBalloons.forEach(b => b.element.remove());
+    activeBalloons = [];
 
-        // Random direction and distance for scatter
-        const angle = Math.random() * Math.PI * 2;
-        const distance = Math.random() * 50 + 30; // Scatter distance 30-80px
-        const translateX = Math.cos(angle) * distance;
-        const translateY = Math.sin(angle) * distance;
-
-        particle.style.setProperty('--tx', `${translateX}px`);
-        particle.style.setProperty('--ty', `${translateY}px`);
-        
-        // Optional: slightly varied animation duration or delay for particles
-        // particle.style.animationDuration = `${0.5 + Math.random() * 0.3}s`;
-
-
-        particle.addEventListener('animationend', () => {
-            particle.remove();
-        });
-        container.appendChild(particle);
+    if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
     }
-}
 
-function startBalloonParty(numberOfBalloons = 15) {
-    // Create initial batch
+    if (balloonCreationIntervalId) {
+        clearInterval(balloonCreationIntervalId);
+    }
+
+    window.removeEventListener('deviceorientation', handleDeviceOrientation, true);
+
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+            .then(permissionState => {
+                if (permissionState === 'granted') {
+                    window.addEventListener('deviceorientation', handleDeviceOrientation, true);
+                } else {
+                    console.warn("DeviceOrientation permission not granted.");
+                }
+            })
+            .catch(console.error);
+    } else if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', handleDeviceOrientation, true);
+    } else {
+        console.warn("DeviceOrientationEvent not supported.");
+    }
+
     for (let i = 0; i < numberOfBalloons; i++) {
-        setTimeout(createBalloon, Math.random() * 2000); // Stagger initial creation
+        setTimeout(createBalloon, Math.random() * 1000 + i * 100);
     }
+    
+    balloonCreationIntervalId = setInterval(createBalloon, 2000);
 
-    // Optionally, create new balloons periodically
-    // setInterval(createBalloon, 3000); // Example: new balloon every 3 seconds
+    animationFrameId = requestAnimationFrame(updateBalloonPositions);
 }
 
 export { startBalloonParty };

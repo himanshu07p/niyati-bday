@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&family=Dancing+Script:wght@400;700&family=Cormorant+Garamond:wght@400;600;700&display=swap');
 
 body {
     font-family: 'Lato', sans-serif; /* Modern sans-serif for body */
@@ -8,6 +8,13 @@ body {
     color: #4a4a4a; /* Darker gray for better readability */
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scrollbar from animations */
+}
+
+/* Add this rule for the #app container */
+body.content-revealed #app {
+    pointer-events: none; /* Allow clicks to pass through #app to balloons */
+    position: relative; /* Establish a stacking context */
+    z-index: 1;         /* Ensure #app is above #balloon-container (z-index: 0) */
 }
 
 h1 {

@@ -1,0 +1,43 @@
+#butterfly-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0; /* Same level as balloons, behind main content */
+}
+
+.butterfly {
+    position: absolute;
+    font-size: 25px; /* Default size */
+    opacity: 0; /* Start transparent, JS will fade in */
+    animation-name: flutterWings;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite; 
+    will-change: transform, opacity;
+    left: 0; /* Positioned by JS transform variables */
+    top: 0;  /* Positioned by JS transform variables */
+    transform-origin: center center; /* For flutterWings */
+    /* transform will be set using CSS variables from JS and CSS animation */
+    transform: translate(var(--currentX, 0px), var(--currentY, 0px)) rotateZ(var(--flight-angle, 0deg)) rotateY(var(--flutter-rotate-y, 0deg));
+    --flutter-rotate-y: 0deg; /* Initial value for the custom property */
+    --flight-angle: 0deg; /* Initial flight angle */
+}
+
+@keyframes flutterWings { /* Animates a custom property */
+    0%, 100% {
+        --flutter-rotate-y: 0deg;
+    }
+    50% {
+        --flutter-rotate-y: 40deg;
+    }
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .butterfly {
+        /* font-size: 18px; /* Slightly smaller if needed, or let JS handle scale */
+    }
+}

@@ -2,6 +2,7 @@
     padding: 40px 20px; /* Increased padding */
     text-align: center;
     margin-bottom: 30px; /* Space below intro */
+    pointer-events: auto; /* Enable pointer events for this content block */
 }
 
 .intro h1 { /* Targeting the h1 specifically within the intro if needed, assuming it's the main page title */

@@ -1,51 +1,59 @@
-.message-container {
-    background-color: #ffffff; /* Pure white for a clean look */
-    border: 1px solid #e0d2e0; /* Softer, lighter purple border */
-    border-radius: 12px; /* More rounded corners */
-    padding: 30px; /* Increased padding */
-    margin: 30px auto; /* Centered with more margin */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Softer, more diffused shadow */
-    max-width: 700px; /* Max width for better layout */
-    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; /* Smooth transition for hover */
+.letter-content { /* Was .message-container */
+    max-width: 700px; /* Keep a readable width */
+    margin: 40px auto; /* Center it with some top/bottom margin */
+    padding: 20px; /* Some padding for breathing room */
+    text-align: left; /* Typical for a letter */
+    pointer-events: auto; /* Enable pointer events for this content block */
+    /* Removed background, border, box-shadow, border-radius */
 }
 
-.message-container:hover {
-    transform: translateY(-5px) scale(1.02); /* Lift and slightly scale on hover */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12); /* Enhanced shadow on hover */
+.letter-content h2 {
+    font-family: 'Cormorant Garamond', serif; /* Elegant serif for the greeting */
+    font-size: 2.2em; /* Slightly larger for emphasis */
+    color: #c71585; /* MediumVioletRed - a strong, celebratory color */
+    text-align: center; /* Center the main greeting */
+    margin-bottom: 30px;
 }
 
-.message-container h2 {
-    margin-top: 0; /* Remove top margin if it's the first element */
-    color: #8a2be2; /* BlueViolet, a vibrant but pleasing purple */
-}
-
-.message-container p {
-    font-size: 1.1em;
-    line-height: 1.7;
-    color: #4a4a4a;
+.letter-content p {
+    font-family: 'Dancing Script', cursive; /* Fancy script font for the letter body */
+    font-size: 1.8em; /* Larger for script font readability */
+    line-height: 1.8; /* Generous line height for script */
+    color: #583759; /* A softer, elegant dark purple/gray */
+    white-space: pre-line; /* Respect line breaks from the template literal */
 }
 
 /* Mobile Optimizations */
 @media (max-width: 768px) {
-    .message-container {
-        padding: 20px;
-        margin: 20px auto;
+    .letter-content {
+        padding: 15px;
+        margin: 30px auto;
     }
 
-    .message-container p {
-        font-size: 1em;
-        line-height: 1.6;
+    .letter-content h2 {
+        font-size: 2em;
+    }
+
+    .letter-content p {
+        font-size: 1.6em;
+        line-height: 1.7;
     }
 }
 
 @media (max-width: 480px) {
-    .message-container {
-        padding: 15px;
-        margin: 15px auto;
-        border-radius: 8px;
+    .letter-content {
+        padding: 10px;
+        margin: 20px auto;
+        max-width: 95%; /* Allow more width on small screens */
     }
 
-    .message-container p {
-        font-size: 0.95em;
+    .letter-content h2 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+
+    .letter-content p {
+        font-size: 1.4em;
+        line-height: 1.6;
     }
 }

@@ -1,23 +1,24 @@
 const introModulePromise = import('./components/intro.js');
 const messageModulePromise = import('./components/message.js');
-const balloonsModulePromise = import('./components/balloons.js'); // Import balloons
+const balloonsModulePromise = import('./components/balloons.js');
+const butterfliesModulePromise = import('./components/butterflies.js'); // Import butterflies
 
 async function revealContentAndInitialize() {
     const app = document.getElementById('app');
     app.style.display = 'block'; // Show the app container
     document.body.classList.add('content-revealed'); // Adjust body display
 
-    const introModule = await introModulePromise;
     const messageModule = await messageModulePromise;
     const balloonsModule = await balloonsModulePromise; // Await balloons module
+    const butterfliesModule = await butterfliesModulePromise; // Await butterflies module
 
     // Sample data
     const userName = "Niyati";
 
-    app.appendChild(introModule.renderIntro());
     app.appendChild(messageModule.renderMessage(userName));
 
     balloonsModule.startBalloonParty(); // Start the balloons
+    butterfliesModule.startSpecialButterflyJourney(); // Updated function call
 }
 
 document.addEventListener('DOMContentLoaded', () => {

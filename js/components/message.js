@@ -1,11 +1,12 @@
 function renderMessage(userName) {
-    const messageContainer = document.createElement('div');
-    messageContainer.className = 'message-container';
-    messageContainer.classList.add('animate-fadeInUp', 'anim-delay-600ms'); // Fade in with delay
+    const letterContainer = document.createElement('div');
+    letterContainer.className = 'letter-content'; // Changed class name
+    letterContainer.classList.add('animate-fadeInUp', 'anim-delay-600ms'); // Fade in with delay
 
     const messageHeader = document.createElement('h2');
-    messageHeader.textContent = `Happy Birthday, ${userName}! 🎉`; // Added emoji
-    messageContainer.appendChild(messageHeader);
+    // Wrap userName (Niyati) in a span
+    messageHeader.innerHTML = `Happy Birthday, <span id="target-niyati">${userName}</span>! 🎉`; 
+    letterContainer.appendChild(messageHeader);
 
     const messageBody = document.createElement('p');
     // Using template literals for multi-line string and easier formatting
@@ -17,11 +18,11 @@ function renderMessage(userName) {
         <br><br>
         Wishing you all the best,
         <br>
-        Himanshu
+        <span id="target-himanshu">Himanshu</span>
     `;
-    messageContainer.appendChild(messageBody);
+    letterContainer.appendChild(messageBody);
 
-    return messageContainer;
+    return letterContainer;
 }
 
 export { renderMessage };

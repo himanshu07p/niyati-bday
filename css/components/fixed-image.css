@@ -1,0 +1,14 @@
+#bottom-right-image {
+    position: fixed;
+    bottom: -150px; /* Half of the element's height (300px / 2) */
+    right: -150px;  /* Half of the element's width (300px / 2) */
+    
+    width: 300px; 
+    height: 300px; 
+    
+    clip-path: inset(0 50% 50% 0); 
+    
+    object-fit: cover; 
+    z-index: 5; 
+    pointer-events: none; 
+}
